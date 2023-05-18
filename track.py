@@ -12,6 +12,7 @@ from werewolf import web_driver
 
 WEREWOLF_URL = "https://apda.online/forum/topic/ww98-basicwolf"
 FORUM_URL = "https://apda.online/forum/"
+
 with open("data/players.csv", "r") as open_file:
     PLAYERS = {row["user"]: row for row in csv.DictReader(open_file)}
 
@@ -84,11 +85,11 @@ def log_post(driver: webdriver.Chrome, keys: list[str]) -> None:
                 "original_vote": vote[1],
                 "match": vote[2],
                 "link": post.find(class_="post-meta")("a")[-1].get("href"),
-                "post_timestamp": datetime.strptime(
+                "posted": datetime.strptime(
                     post.find("div", class_="forum-post-date").text,
                     "%B %d, %Y, %I:%M %p"
                 ).strftime("%-m/%-d %-I:%M:%S%p").lower(),
-                "log_timestamp": f'{datetime.now():%-m/%-d %-I:%M:%S%p}'.lower()
+                "logged": f'{datetime.now():%-m/%-d %-I:%M:%S%p}'.lower()
             }
             with open("data/posts.csv", "a") as csv_file:
                 writer = csv.DictWriter(csv_file, fieldnames=list(new_post))
